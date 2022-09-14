@@ -1,0 +1,23 @@
+{
+  "name": "appengine-vonage",
+  "version": "0.0.1",
+  "description": "Vonage sample for Google App Engine.",
+  "private": true,
+  "license": "Apache Version 2.0",
+  "author": "Billy Gade",
+  "keywords": [],
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@vonage/server-sdk": "^2.11.2",
+    "express": "^4.18.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
