@@ -28,7 +28,7 @@ const request = (req, res, next) => {
 const check = (req, res, next) => {
     try {
         const id = req.body.id || process.env.REQUEST_ID;
-        const code = req.body.code || process.env.CODE;
+        const code = req.body.code || process.env.VERIFY_CODE;
         context.vonage.verify.check({
             request_id: id,
             code: code

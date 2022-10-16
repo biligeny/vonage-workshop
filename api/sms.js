@@ -1,12 +1,11 @@
 'use strict';
 
 const context = require('../models/context');
-
 const message = 'A text message sent using the Vonage SMS API';
 
 const send = (req, res, next) => {
     try {
-        const from = req.body.from || process.env.FROM_NUMBER;
+        const from = req.body.from || process.env.VIRTUAL_NUMBER;
         const to = req.body.to || process.env.TO_NUMBER;
         const text = req.body.text || message;
 
@@ -29,15 +28,15 @@ const send = (req, res, next) => {
 }
 
 const receive = (req, res) => {
-    const params = Object.assign(request.query, request.body);
+    const params = Object.assign(req.query, req.body);
     console.log(params);
-    response.status(204).send(params);
+    res.status(204).send(params);
 }
 
 const dlr = (req, res) => {
-    const params = Object.assign(request.query, request.body)
+    const params = Object.assign(req.query, req.body);
     console.log(params);
-    response.status(204).send(params);
+    res.status(204).send(params);
 }
 
 module.exports = {
