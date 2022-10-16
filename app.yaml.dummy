@@ -4,13 +4,13 @@ runtime: nodejs16 # or another supported version
 # The following env variables may contain sensitive information that grants anyone access to your Vonage account.
 # Do not add this file to your source control.
 env_variables:
-  API_KEY: fce245a8
-  API_SECRET: wvyXJgqDS2ClYSh5
-  TO_NUMBER: 819065185577
-  BRAND_NAME: VonageWorkshop
-  VIRTUAL_NUMBER: 447312263233
-  VIRTUAL_NUMBER_SECOND: 447312263036
-  APPLICATION_ID: 95446b1b-db50-4220-b2ee-b7b2824ef793
-  PRIVATE_KEY_PATH: private.key
-  VERIFY_CODE: 2111
-  REQUEST_ID: aa04f5ff5a194032b2569d2a75569622
+  API_KEY: {API_KEY}
+  API_SECRET: {API_SECRET}
+  TO_NUMBER: {TO_NUMBER}
+  BRAND_NAME: {BRAND_NAME}
+  VIRTUAL_NUMBER: {VIRTUAL_NUMBER}
+  VIRTUAL_NUMBER_SECOND: {VIRTUAL_NUMBER_SECOND}
+  APPLICATION_ID: {VONAGE APPLICATION_ID}
+  PRIVATE_KEY_PATH: {PATH to 'private.key'}
+  VERIFY_CODE: {RECEIVED VERIFY CODE}
+  REQUEST_ID: {GENERATED REQUEST_ID}
