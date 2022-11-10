@@ -25,7 +25,10 @@ const call = (req, res, next) => {
                 "text": TTS_TEXT
             }]
         }, (err, res) => {
-            if (err) console.error(err)
+            if (err) {
+                console.error(err);
+                return;
+            }
             if (res) {
                 console.log(res);
                 res.status(200).send(res);
@@ -64,7 +67,7 @@ const answer = (req, res, next) => {
         {
             action: ACTION.INPUT,
             type: [TYPE.DTMF],
-            eventUrl: [`${req.protocol}://${req.get('host')}/voice/dtmf`],
+            eventUrl: [`${req.protocol}://${req.get('host')}/voice/events`],
             maxDigits: 1
         }]
         res.status(200).json(ncco);
@@ -74,7 +77,7 @@ const answer = (req, res, next) => {
     }
 }
 
-const dtmf = (req, res, next) => {
+const events = (req, res, next) => {
     try {
         const dtmf = req.body.dtmf
         let ncco;
@@ -115,7 +118,7 @@ const dtmf = (req, res, next) => {
                         submitOnHash: true
                     }
                 ]
-                res.json(ncco)
+                res.json(ncco);
                 break;
             case "3":
                 ncco =
@@ -131,7 +134,7 @@ const dtmf = (req, res, next) => {
                         endOnSilence: 3
                     }
                 ]
-                res.json(ncco)
+                res.json(ncco);
                 break;
             default:
                 ncco = [
@@ -176,6 +179,7 @@ module.exports = {
     call,
     receive,
     answer,
-    dtmf, 
+    events,
+    record,
     account
 };
