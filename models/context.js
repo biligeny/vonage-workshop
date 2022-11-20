@@ -1,9 +1,10 @@
 'use strict';
 
 const express = require('express');
-const Vonage = require('@vonage/server-sdk');
+const { Vonage } = require('@vonage/server-sdk');
 
-const {API_KEY,
+const {
+    API_KEY,
     API_SECRET,
     BRAND_NAME,
     APPLICATION_ID,
@@ -12,22 +13,32 @@ const {API_KEY,
     VIRTUAL_NUMBER,
     VIRTUAL_NUMBER_SECOND,
     VERIFY_CODE,
-    REQUEST_ID} = process.env;
+    REQUEST_ID,
+} = process.env;
 
 class Context {
-    constructor (api_key, api_secret, applicaion_id, private_key) {
+    constructor(api_key, api_secret, applicaion_id, private_key) {
         this.vonage = new Vonage({
             apiKey: api_key,
             apiSecret: api_secret,
             applicationId: applicaion_id,
             privateKey: private_key
-        });
+        }, { debug: true });
     }
 }
 
 if (!API_KEY || !API_SECRET || !APPLICATION_ID || !PRIVATE_KEY_PATH) {
-    console.log('Please configure environment variables as described in README.md');
-    throw new Error('Please configure environment variables as described in README.md');
+    console.log(
+        "Please configure environment variables as described in README.md"
+    );
+    throw new Error(
+        "Please configure environment variables as described in README.md"
+    );
 }
 
-module.exports = new Context(API_KEY, API_SECRET, APPLICATION_ID, PRIVATE_KEY_PATH);
+module.exports = new Context(
+    API_KEY,
+    API_SECRET,
+    APPLICATION_ID,
+    PRIVATE_KEY_PATH
+);

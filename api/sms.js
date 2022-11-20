@@ -1,6 +1,7 @@
 'use strict';
 
 const context = require('../models/context');
+
 const message = 'A text message sent using the Vonage SMS API';
 
 const send = (req, res, next) => {
@@ -21,6 +22,7 @@ const send = (req, res, next) => {
                 }
             }
         });
+
     } catch (err) {
         next(err);
         return;

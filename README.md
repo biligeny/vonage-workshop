@@ -1,26 +1,23 @@
-# Node.js Twilio voice and SMS sample for Google App Engine
+# Node.js Vonage voice and SMS sample for Google App Engine
 
-This sample shows how to use [Twilio](https://www.twilio.com) on
+This sample shows how to use [Vonage](https://www.vonage.com/) on
 [Google App Engine](https://cloud.google.com/appengine) Node.js [standard environment](https://cloud.google.com/appengine/docs/standard/nodejs)
 and [flexible environment](https://cloud.google.com/appengine/docs/flexible/nodejs)
 
-For more information about Twilio, see the
-[Twilio Node library](https://www.twilio.com/docs/node/install).
+For more information about Vonage, see the
+[Vonage SDK library](https://developer.vonage.com).
 
 ## Setup
 
 Before you can run or deploy the sample, you will need to do the following:
 
-1. [Create a Twilio Account](http://ahoy.twilio.com/googlecloudplatform). Google
-App Engine customers receive a complimentary credit for SMS messages and inbound
-messages.
+1. [Create a Vonage Account](https://dashboard.nexmo.com/sign-up).
 
-1. Create a number on twilio, and configure the voice request URL to be
+2. [Buy a number on Vonage](https://dashboard.nexmo.com/buy-numbers), and configure the voice request URL to be
 `https://<your-project-id>.appspot.com/call/receive` and the SMS request URL to
 be `https://<your-project-id>.appspot.com/sms/receive`.
 
-1. Configure your Twilio settings in the environment variables section in
-`app.yaml`.
+3. Configure your Vonage settings in the environment variables section in `app.yaml-example` and rename to `app.yaml`.
 
 ## Running locally
 
