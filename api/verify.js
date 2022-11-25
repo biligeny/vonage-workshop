@@ -2,19 +2,23 @@
 
 const context = require('../models/context');
 
-const request = (req, res, next) => {
+const start = async (req, res, next) => {
+   // console.log(new Date());
     try {
         const to = req.body.to || process.env.TO_NUMBER;
         const brand = req.body.brand || process.env.BRAND_NAME;
+        console.log(to);
 
-        context.vonage.verify.start({
-            number: to,
-            senderId: brand
+        await context.vonage.verify.start({
+            number: "819065185577",
+            senderId: "brand"
         }).then(resp => {
             console.log(resp.request_id);
             res.status(200).send(resp.request_id);
         }).catch(err => console.error(err));
     } catch (err) {
+        console.log(new Date());
+
         return next(err);
     }
 };
@@ -24,7 +28,7 @@ const check = (req, res, next) => {
         const id = req.body.id || process.env.REQUEST_ID;
         const code = req.body.code || process.env.VERIFY_CODE;
 
-        vonage.verify.check(id, code)
+        context.vonage.verify.check(id, code)
             .then(resp => {
                 console.log(resp);
                 res.status(200).send(resp);
@@ -36,6 +40,6 @@ const check = (req, res, next) => {
 };
 
 module.exports = {
-    request,
+    start,
     check
 };

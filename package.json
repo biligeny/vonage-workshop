@@ -1,6 +1,6 @@
 {
   "name": "appengine-vonage",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "description": "Vonage sample for Google App Engine.",
   "private": true,
   "license": "Apache Version 2.0",
