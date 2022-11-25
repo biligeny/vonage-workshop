@@ -7,21 +7,15 @@ const request = (req, res, next) => {
         const to = req.body.to || process.env.TO_NUMBER;
         const brand = req.body.brand || process.env.BRAND_NAME;
 
-        context.vonage.verify.request({
+        context.vonage.verify.start({
             number: to,
-            brand: brand
-        }, (err, result) => {
-            if (err) {
-                console.error(err);
-            } else {
-                const verifyRequestId = result.request_id;
-                console.log('request_id', verifyRequestId);
-                res.status(200).send('request_id: ' + verifyRequestId);
-            }
-        });
+            senderId: brand
+        }).then(resp => {
+            console.log(resp.request_id);
+            res.status(200).send(resp.request_id);
+        }).catch(err => console.error(err));
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 };
 
@@ -29,20 +23,15 @@ const check = (req, res, next) => {
     try {
         const id = req.body.id || process.env.REQUEST_ID;
         const code = req.body.code || process.env.VERIFY_CODE;
-        context.vonage.verify.check({
-            request_id: id,
-            code: code
-        }, (err, result) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log(result);
-                res.status(200).send(result);
-            }
-        });
+
+        vonage.verify.check(id, code)
+            .then(resp => {
+                console.log(resp);
+                res.status(200).send(resp);
+            })
+            .catch(err => console.error(err));
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 };
 

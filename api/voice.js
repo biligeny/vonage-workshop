@@ -1,43 +1,33 @@
 'use strict';
 
 const context = require('../models/context');
+const { NCCOBuilder, Talk, OutboundCallWithNCCO } = require('@vonage/voice')
 
-const TYPE = {PHONE: 'phone', DTMF: 'dtmf'};
-const ACTION = {TALK: 'talk', INPUT: 'input', CONNECT: 'connect', RECORD: 'record'};
+const TYPE = { PHONE: 'phone', SPEECH: 'speech', DTMF: 'dtmf' };
+const ACTION = { TALK: 'talk', INPUT: 'input', CONNECT: 'connect', RECORD: 'record' };
 const TTS_TEXT = 'This is a text to speech call from Vonage';
 
-const call = (req, res, next) => {
+const call = async (req, res, next) => {
     try {
-        const to = req.body.to || process.env.TO;
-        const from = req.body.from || process.env.VIRTUAL_NUMBER;
+        const to = req.body.to || process.env.TO_NUMBER;
+        const from = req.body.from || process.env.VONAGE_NUMBER;
 
-        context.vonage.calls.create({
-            to: [{
-                type: TYPE.PHONE,
-                number: to
-            }],
-            from: {
-                type: TYPE.PHONE,
-                number: from
-            },
-            ncco: [{
-                "action": ACTION.TALK,
-                "text": TTS_TEXT
-            }]
-        }, (err, res) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            if (res) {
-                console.log(res);
-                res.status(200).send(res);
-            }
-        });
-        res.status(200).json(ncco);
+        const builder = new NCCOBuilder();
+        builder.addAction(new Talk(TTS_TEXT));
+        await context.vonage.voice.createOutboundCall(
+            new OutboundCallWithNCCO(
+                builder.build(),
+                { type: 'phone', number: to },
+                { type: 'phone', number: from }
+            )
+        ).then(resp => {
+            console.log(resp);
+            res.status(200).send(resp);
+        }).catch(err => {
+            console.error(err);
+        });;
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 }
 
@@ -45,141 +35,123 @@ const receive = (req, res, next) => {
     try {
         const from = req.query.from
         const fromSplitIntoCharacters = from.split('').join(' ')
-        
+
         const ncco = [{
             action: ACTION.TALK,
             text: `Thank you for calling from ${fromSplitIntoCharacters}`
         }]
         res.status(200).json(ncco);
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 }
 
-const answer = (req, res, next) => {
+const dtmf = (req, res, next) => {
     try {
         const ncco = [{
             action: ACTION.TALK,
-            text: 'Hello, welcome to Acme Systems Incorporated\'s Interactive Voice Response System. To speak with Sales press 1. For Customer Support press 2. For the press office, press 3',
-            bargeIn: true
+            text: 'Please enter a digit'
         },
         {
             action: ACTION.INPUT,
             type: [TYPE.DTMF],
-            eventUrl: [`${req.protocol}://${req.get('host')}/voice/events`],
+            eventUrl: [`${req.protocol}://${req.get('host')}/voice/ondtmf`],
             maxDigits: 1
         }]
         res.status(200).json(ncco);
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 }
 
-const events = (req, res, next) => {
+const ondtmf = (req, res, next) => {
     try {
-        const dtmf = req.body.dtmf
-        let ncco;
-
-        switch (dtmf) {
-            case "1":
-                ncco = [
-                    {
-                        action: ACTION.TALK,
-                        text: `You have asked to speak with the Sales Department, Connecting you now.`
-                    },
-                    {
-                        action: ACTION.CONNECT,
-                        from: process.env.VIRTUAL_NUMBER,
-                        endpoint: 
-                        [
-                            {
-                                "type": TYPE.PHONE,
-                                "number": process.env.VIRTUAL_NUMBER_SECOND
-                            }
-                        ]
-                    }
-                ]
-                res.json(ncco)
-                break;
-            case "2":
-                ncco = 
-                [
-                    {
-                        action: ACTION.TALK,
-                        text: 'You have asked to speak with customer service, please input your 5 digit account number followed by the pound sign'
-                    },
-                    {
-                        action: 'input',
-                        eventUrl: [`${base_url}/voice/account`],
-                        timeOut: 10,
-                        maxDigits: 6,
-                        submitOnHash: true
-                    }
-                ]
-                res.json(ncco);
-                break;
-            case "3":
-                ncco =
-                [
-                    {
-                        action: ACTION.TALK,
-                        text: 'You have asked to speak with the press office. Unfortunately no one from the press office is currently available and the recording service has yet to be implemented, please try back later'
-                    },
-                    {
-                        action: ACTION.RECORD,
-                        beepStart: true,
-                        eventUrl: [`${base_url}/voice/record`],
-                        endOnSilence: 3
-                    }
-                ]
-                res.json(ncco);
-                break;
-            default:
-                ncco = [
-                    {
-                        action: ACTION.TALK,
-                        text: 'I\'m sorry I didn\'t understand what you entered please try again'
-                    }
-                ];
-                res.json(ncco);
-                break;
-            }
-
-        } catch (err) {
-            next(err);
-            return;    
-    }
-}
-
-const account = (req, res, next) => {
-    try {
-        const dtmf = req.body.dtmf
-        const input = dtmf.split('').join(' ');
-        const ncco = [
-            {
-                action: ACTION.TALK,
-                text: 'Your account number is: ' + input + ' your case has been added and is being actively triaged, you will be contacted with an update to your case in 24 hours'
-            }
-        ];
-        res.status(200).send(ncco);
+        const dtmf = req.body.dtmf;
+        const ncco = [{
+            action: ACTION.TALK,
+            text: `You pressed ${dtmf}`
+        }];
+        res.status(200).json(ncco);
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 }
 
-const record = (req, res) =>{
-    console.log(req.body.recording_url);
-    res.status(200).send();
+const asr = (req, res, next) => {
+    try {
+        const ncco = [{
+            action: ACTION.TALK,
+            text: 'Please say something'
+        },
+        {
+            action: ACTION.INPUT,
+            type: [TYPE.SPEECH],
+            eventUrl: [`${req.protocol}://${req.get('host')}/voice/onasr`],
+            speech: {
+                endOnSilence: 1,
+                language: "en-US",
+                uuid: [req.query.uuid]
+            }
+        }];
+        res.status(200).json(ncco);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const onasr = (req, res, next) => {
+    try {
+        const speech = req.body.speech.results[0].text;
+        const ncco = [{
+            action: ACTION.TALK,
+            text: `You said ${speech}`
+        }];
+        res.status(200).json(ncco);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const record = (req, res, next) => {
+    try {
+        const to = req.body.to || process.env.TO_NUMBER;
+        const from = req.body.from || process.env.VONAGE_NUMBER;
+
+        const ncco = [{
+            action: ACTION.RECORD,
+            eventUrl: [`${req.protocol}://${req.get('host')}/voice/onrecord`]
+        },
+        {
+            action: ACTION.CONNECT,
+            from: from,
+            endpoint: [{
+                type: TYPE.PHONE,
+                number: to
+            }]
+        }];
+        res.status(200).json(ncco);
+    } catch (err) {
+        return next(err);
+    }
+}
+
+const onrecord = (req, res) => {
+    try {
+        const recording_url = req.body.recording_url
+        console.log(`Recording URL = ${recording_url}`)
+        res.status(204).send(recording_url);
+    } catch (err) {
+        return next(err);
+    }
 }
 
 module.exports = {
     call,
     receive,
-    answer,
-    events,
+    dtmf,
+    ondtmf,
+    asr,
+    onasr,
     record,
-    account
+    onrecord
 };

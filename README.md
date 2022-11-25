@@ -9,29 +9,22 @@ For more information about Vonage, see the
 
 ## Setup
 
-Before you can run or deploy the sample, you will need to do the following:
+Before you can run or deploy the sample, you will need to [Do The Following:](https://developer.vonage.com/messaging/sms/code-snippets/before-you-begin)
 
-1. [Create a Vonage Account](https://dashboard.nexmo.com/sign-up).
+1. Create a Vonage Account
+2. Rent a Vonage Number
 
-2. [Buy a number on Vonage](https://dashboard.nexmo.com/buy-numbers), and configure the voice request URL to be
-`https://<your-project-id>.appspot.com/call/receive` and the SMS request URL to
-be `https://<your-project-id>.appspot.com/sms/receive`.
+## Webhooks
 
-3. Configure your Vonage settings in the environment variables section in `app.yaml-example` and rename to `app.yaml`.
+1. Configure the [Voice Receive](https://<your-project-id>.appspot.com/call/receive) and [SMS Inbound](https://<your-project-id>.appspot.com/sms/receive) Webhook - If you deploy to the GCP.
 
-## Running locally
+2. See [Using Ngrok for local development](https://developer.vonage.com/tools/ngrok) for details of how to set up and use Ngrok.
 
-Refer to the [appengine/README.md](../README.md) file for instructions on
-running and deploying.
+## Configure Environment Variables
 
-You can run the application locally to test the callbacks and SMS sending. You
-will need to set environment variables before starting your application:
+1. Configure your Vonage settings in the environment variables section in `app.yaml-example` and rename to `app.yaml`.
 
-    export TWILIO_ACCOUNT_SID=<your-twilio-account-sid>
-    export TWILIO_AUTH_TOKEN=<your-twilio-auth-token>
-    export TWILIO_NUMBER=<your-twilio-number>
-    npm start
-
+2. Export your Vonage settings in `app.sh-example` and rename to `app.sh`.
 
 # Quickstart for Node.js in the App Engine standard environment
 
@@ -40,36 +33,23 @@ This is the sample application for the
 tutorial found in the [Google App Engine Node.js standard environment][appengine]
 documentation.
 
-* [Setup](#setup)
 * [Running locally](#running-locally)
 * [Deploying to App Engine](#deploying-to-app-engine)
-* [Running the tests](#running-the-tests)
+* [Testing the service](#Testing-the-Service)
 
-## Setup
 
-Before you can run or deploy the sample, you need to do the following:
+## Install dependencies
 
-1.  Refer to the [appengine/README.md][readme] file for instructions on
-    running and deploying.
-1.  Install dependencies:
-
-        npm install
+    $ npm install
 
 ## Running locally
 
-    npm start
+    $ source ./app.sh
+    $ npm start
 
 ## Deploying to App Engine
 
-    gcloud app deploy
+    $ gcloud app deploy
+    $ gclould app browse
 
-## Running the tests
-
-See [Contributing][contributing].
-
-[appengine]: https://cloud.google.com/appengine/docs/standard/nodejs
-[tutorial]: https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
-[readme]: ../../README.md
-[contributing]: https://github.com/GoogleCloudPlatform/nodejs-docs-samples/blob/main/CONTRIBUTING.md
-
-
+## Testing the Service

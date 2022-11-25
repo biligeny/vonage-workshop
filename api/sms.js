@@ -4,28 +4,21 @@ const context = require('../models/context');
 
 const message = 'A text message sent using the Vonage SMS API';
 
-const send = (req, res, next) => {
+const send = async (req, res, next) => {
     try {
-        const from = req.body.from || process.env.VIRTUAL_NUMBER;
+        const from = req.body.from || process.env.VONAGE_NUMBER;
         const to = req.body.to || process.env.TO_NUMBER;
+        const encode = req.body.encode || process.env.ENCODE_TYPE;
         const text = req.body.text || message;
 
-        context.vonage.message.sendSms(from, to, text, (err, responseData) => {
-            if (err) {
-                console.log(err);
-            } else {
-                if (responseData.messages[0]['status'] === '0') {
-                    console.log('Message sent successfully.');
-                    res.status(200).send('Message sent successfully.');
-                } else {
-                    console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-                }
-            }
-        });
-
+        await context.vonage.sms.send({ to, from, text, encode })
+            .then(resp => {
+                console.log(resp);
+                res.status(200).send(resp);
+            })
+            .catch(err => { console.error(err); });
     } catch (err) {
-        next(err);
-        return;
+        return next(err);
     }
 }
 

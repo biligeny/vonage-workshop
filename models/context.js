@@ -1,6 +1,5 @@
 'use strict';
 
-const express = require('express');
 const { Vonage } = require('@vonage/server-sdk');
 
 const {
@@ -10,8 +9,8 @@ const {
     APPLICATION_ID,
     PRIVATE_KEY_PATH,
     TO_NUMBER,
-    VIRTUAL_NUMBER,
-    VIRTUAL_NUMBER_SECOND,
+    VONAGE_NUMBER,
+    SECOND_NUMBER,
     VERIFY_CODE,
     REQUEST_ID,
 } = process.env;

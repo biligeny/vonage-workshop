@@ -10,10 +10,10 @@ const voice = require('./routes/voice');
 
 app.set('case sensitive routing', true);
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-   res.status(200).send('Welcome to Vonage API workshop: ' + uuid.v1());
+   res.status(200).send('Welcome to Vonage API workshop: ' + uuid.v1() + ' - ' + new Date());
 });
 
 app.use('/sms', sms);
@@ -21,7 +21,7 @@ app.use('/verify', verify);
 app.use('/voice', voice);
 
 if (module === require.main) {
-   const PORT = parseInt(process.env.PORT) || 8080;
+   const PORT = parseInt(process.env.PORT) || 3080;
    app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}...`);
    });

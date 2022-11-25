@@ -7,9 +7,11 @@ const router = express.Router();
 
 router.post('/call', voice.call);
 router.get('/receive', voice.receive);
-router.get('/answer', voice.answer);
-router.post('/events', voice.events);
+router.get('/dtmf', voice.dtmf);
+router.post('/ondtmf', voice.ondtmf);
+router.get('/asr', voice.asr);
+router.post('/onasr', voice.onasr);
 router.get('/record', voice.record);
-router.get('/account', voice.account);
+router.get('/onrecord', voice.onrecord);
 
 module.exports = router;
