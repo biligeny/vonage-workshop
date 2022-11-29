@@ -52,4 +52,19 @@ documentation.
     $ npm start
 
 
-## Testing the Service
+## Samples of Testing the Service
+
+### SMS
+
+    $ curl -X POST -d 'from={Sender ID}&to={To Number}&text={Message Body}' http://localhost:3080/sms/send
+
+### Verify
+
+    $ curl -X POST -d 'brand={Brand Name}&to={To Number}' http://{host}:{port}/verify/start
+    $ curl -X POST -d 'id={Request ID}&code={Verify Code}' http://{host}:{port}/verify/check
+
+### Voice
+
+    Set the http://{host}:{port}/voice/receive on your VONAGE_NUMBER, call on the Number to check receive.
+    Set the http://{host}:{port}/voice/dtmf on your VONAGE_NUMBER, call on the Number to check DTMF.
+    Set the http://{host}:{port}/voice/asr on your VONAGE_NUMBER, call on the Number to check ASR.

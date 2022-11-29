@@ -48,6 +48,9 @@ const receive = (req, res, next) => {
 
 const dtmf = (req, res, next) => {
     try {
+        const from = req.query.from
+        console.log('Called on ' + from.split('').join(' '));
+
         const ncco = [{
             action: ACTION.TALK,
             text: 'Please enter a digit'
@@ -66,6 +69,9 @@ const dtmf = (req, res, next) => {
 
 const ondtmf = (req, res, next) => {
     try {
+        const from = req.query.from
+        console.log('Called on ' + from.split('').join(' '));
+
         const dtmf = req.body.dtmf;
         const ncco = [{
             action: ACTION.TALK,

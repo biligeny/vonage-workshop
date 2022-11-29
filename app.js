@@ -21,7 +21,7 @@ app.use('/verify', verify);
 app.use('/voice', voice);
 
 if (module === require.main) {
-   const PORT = parseInt(process.env.PORT) || 3080;
+   const PORT = parseInt(process.env.PORT) || 3000;
    app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}...`);
    });

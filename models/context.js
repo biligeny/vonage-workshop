@@ -26,7 +26,7 @@ class Context {
     }
 }
 
-if (!API_KEY || !API_SECRET || !APPLICATION_ID || !PRIVATE_KEY_PATH) {
+if (!API_KEY || !API_SECRET || !APPLICATION_ID || !PRIVATE_KEY_PATH || !VONAGE_NUMBER) {
     console.log(
         "Please configure environment variables as described in README.md"
     );

@@ -11,7 +11,7 @@ const send = async (req, res, next) => {
         const encode = req.body.encode || process.env.ENCODE_TYPE;
         const text = req.body.text || message;
 
-        await context.vonage.sms.send({ to, from, text, encode })
+        await context.vonage.sms.send({ to, from, text })
             .then(resp => {
                 console.log(resp);
                 res.status(200).send(resp);
