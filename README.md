@@ -39,29 +39,29 @@ documentation.
 
 ## Install dependencies
 
-    $ npm install
+    npm install
 
 ## Deploying to App Engine
 
-    $ gcloud app deploy
-    $ gclould app browse
+    gcloud app deploy
+    gclould app browse
 
 ## Running locally
 
-    $ source ./app.sh
-    $ npm start
-
+    npm update
+    source ./app.sh
+    npm start
 
 ## Samples of Testing the Service
 
 ### SMS
 
-    $ curl -X POST -d 'from={Sender ID}&to={To Number}&text={Message Body}' http://localhost:3080/sms/send
+    curl -X POST -d 'from={Sender ID}&to={To Number}&text={Message Body}' http://localhost:3080/sms/send
 
 ### Verify
 
-    $ curl -X POST -d 'brand={Brand Name}&to={To Number}' http://{host}:{port}/verify/start
-    $ curl -X POST -d 'id={Request ID}&code={Verify Code}' http://{host}:{port}/verify/check
+    curl -X POST -d 'brand={Brand Name}&to={To Number}' http://{host}:{port}/verify/start
+    curl -X POST -d 'id={Request ID}&code={Verify Code}' http://{host}:{port}/verify/check
 
 ### Voice
 
