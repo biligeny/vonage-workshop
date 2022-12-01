@@ -16,9 +16,10 @@ const call = async (req, res, next) => {
 	try {
 		const to = req.body.to || process.env.TO_NUMBER;
 		const from = req.body.from || process.env.VONAGE_NUMBER;
+		const text = req.body.text || TTS_TEXT;
 
 		const builder = new NCCOBuilder();
-		builder.addAction(new Talk(TTS_TEXT));
+		builder.addAction(new Talk(text));
 		await context.vonage.voice
 			.createOutboundCall(
 				new OutboundCallWithNCCO(
@@ -58,9 +59,6 @@ const answer = (req, res, next) => {
 
 const dtmf = (req, res, next) => {
 	try {
-		const from = req.query.from;
-		console.log('Called on ' + from.split('').join(' '));
-
 		const ncco = [
 			{
 				action: ACTION.TALK,
@@ -81,9 +79,6 @@ const dtmf = (req, res, next) => {
 
 const ondtmf = (req, res, next) => {
 	try {
-		const from = req.query.from;
-		console.log('Called on ' + from.split('').join(' '));
-
 		const dtmf = req.body.dtmf;
 		const ncco = [
 			{
@@ -176,7 +171,7 @@ const onrecord = (req, res, next) => {
 const event = (req, res, next) => {
 	try {
 		console.log(`event = ${req.body}`);
-		res.status(204).join(req.body);
+		res.status(204).json(req.body);
 	} catch (err) {
 		return next(err);
 	}
@@ -184,7 +179,7 @@ const event = (req, res, next) => {
 
 const fallback = (req, res) => {
 	try {
-		console.log(`failover = ${req.body}`);
+		console.log(`fallback = ${req.body}`);
 		const second_number = req.body.to || process.env.SECOND_NUMBER;
 
 		let fallbackEvents = ['timeout', 'failed', 'unanswered', 'busy', 'rejected'];
