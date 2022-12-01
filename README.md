@@ -16,7 +16,7 @@ Before you can run or deploy the sample, you will need to [Do The Following:](ht
 
 ## Webhooks
 
-1. Configure the `Voice Receive` (https://<your-project-id>.appspot.com/call/receive) and `SMS Inbound` (https://<your-project-id>.appspot.com/sms/receive) Webhook - If you deploy to the GCP.
+1. Configure the `Voice Receive` (https://{your-project-id}.appspot.com/call/receive) and `SMS Inbound` (https://{your-project-id}.appspot.com/sms/receive) Webhook - If you deploy to the GCP.
 
 2. See [Using Ngrok for local development](https://developer.vonage.com/tools/ngrok) for details of how to set up and use Ngrok for locall environment.
 
