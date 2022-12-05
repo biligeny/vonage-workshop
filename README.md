@@ -26,6 +26,8 @@ Before you can run or deploy the sample, you will need to [Do The Following:](ht
 
 2. Export your Vonage settings in `app.sh-example` and rename to `app.sh` if you want run this in local development.
 
+3. Replace `private.key-example` with your applications's `private.key` file.
+
 # Quickstart for Node.js in the App Engine standard environment
 
 This is the sample application for the
